@@ -6,7 +6,7 @@ h5exporters = false  # true if plugin contains custom h5 file exporters
 scanners = false  # true if plugin contains custom scan layout (daq_scan extensions)
 
 [urls]
-package-url = 'https://github.com/loicguilmard/pymodaq_plugins_cellkraft'
+package-url = 'https://github.com/PyMoDAQ/pymodaq_plugins_cellkraft'
 
 [project]
 name = "pymodaq_plugins_cellkraft"
@@ -18,9 +18,12 @@ dependencies = [
 
 authors = [
     {name = "Loic GUILMARD", email = "loic.guilmard@cnrs.fr"},
+    {name = "Sébastien GUERRERO", email = "sebastien.guerrero@insa-lyon.fr"},
+    {name = "Fabien VILLEDIEU", email = "fabien.villedieu.pro@gmail.com"},
 ]
 maintainers = [
     {name = "Loic GUILMARD", email = "loic.guilmard@cnrs.fr"},
+    {name = "Sébastien GUERRERO", email = "sebastien.guerrero@insa-lyon.fr"},
 ]
 
 # nottodo: leave everything below as is!
