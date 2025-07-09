@@ -37,12 +37,12 @@ CellKraft ESeries
 Actuators
 +++++++++
 
-* **daq_move_CellkraftE1500**: Control all the various parameters of the CellkraftE1500 steam generator
+* **CellkraftE1500**: Control all the various parameters of the CellkraftE1500 steam generator
 
 Viewer0D
 ++++++++
 
-* **daq_0Dviewer_Pressure.py**: Acquires pressure from CellkraftE1500 steam generator
+* **Pressure**: Acquires pressure from CellkraftE1500 steam generator
 
 Configuration File
 ++++++++++++++++++
