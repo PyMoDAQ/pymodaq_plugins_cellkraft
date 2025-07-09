@@ -42,7 +42,7 @@ Actuators
 Viewer0D
 ++++++++
 
-* **Pressure.py**: Acquires pressure from CellkraftE1500 steam generator
+* **Pressure**: Acquires pressure from CellkraftE1500 steam generator
 
 Configuration File
 ++++++++++++++++++
