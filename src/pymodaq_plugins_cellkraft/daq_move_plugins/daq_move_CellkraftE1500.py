@@ -89,25 +89,22 @@ class DAQ_Move_CellkraftE1500(DAQ_Move_base):
         self.controller: CellKraftE1500Drivers
         self.current_axes = self.settings.child('multiaxes', 'axis').value()
 
-        if self.current_axes == 'Flow':
-            self.settings.child('info').setValue(self.desc['Flow'])
-            self.settings.child('limit').setValue(self.lim['Flow'])
-
-        elif self.current_axes == 'Steam_Temperature':
-            self.settings.child('info').setValue(self.desc['Steam_Temperature'])
-            self.settings.child('limit').setValue(self.lim['Steam_Temperature'])
-
-        elif self.current_axes == 'Tube_Temperature':
-            self.settings.child('info').setValue(self.desc['Tube_Temperature'])
-            self.settings.child('limit').setValue(self.lim['Tube_Temperature'])
-
-        elif self.current_axes == 'RH':
-            self.settings.child('info').setValue(self.desc['RH'])
-            self.settings.child('limit').setValue(self.lim['RH'])
-
-        elif self.current_axes == 'Pressure':
-            self.settings.child('info').setValue(self.desc['Pressure'])
-            self.settings.child('limit').setValue(self.lim['Pressure'])
+        match self.current_axes:
+            case 'Flow':
+                self.settings.child('info').setValue(self.desc['Flow'])
+                self.settings.child('limit').setValue(self.lim['Flow'])
+            case 'Steam_Temperature':
+                self.settings.child('info').setValue(self.desc['Steam_Temperature'])
+                self.settings.child('limit').setValue(self.lim['Steam_Temperature'])
+            case 'Tube_Temperature':
+                self.settings.child('info').setValue(self.desc['Tube_Temperature'])
+                self.settings.child('limit').setValue(self.lim['Tube_Temperature'])
+            case 'RH':
+                self.settings.child('info').setValue(self.desc['RH'])
+                self.settings.child('limit').setValue(self.lim['RH'])
+            case 'Pressure':
+                self.settings.child('info').setValue(self.desc['Pressure'])
+                self.settings.child('limit').setValue(self.lim['Pressure'])
 
     def get_actuator_value(self):
         """Get the current value from the hardware with scaling conversion.
@@ -116,33 +113,29 @@ class DAQ_Move_CellkraftE1500(DAQ_Move_base):
         -------
         float: The position obtained after scaling conversion.
         """
-        if self.current_axes == 'Flow':
-            flow = DataActuator(data=self.controller.Get_Flow())
-            flow = self.get_position_with_scaling(flow)
-            return flow
-
-        elif self.current_axes == 'RH':
-            air_h = DataActuator(data=self.controller.Get_Air_H())
-            air_h = self.get_position_with_scaling(air_h)
-            return air_h
-
-        elif self.current_axes == 'Steam_Temperature':
-            steam_t = DataActuator(data=self.controller.Get_Steam_T())
-            steam_t = self.get_position_with_scaling(steam_t)
-            return steam_t
-
-        elif self.current_axes == 'Tube_Temperature':
-            tube_t = DataActuator(data=self.controller.Get_Tube_T())
-            tube_t = self.get_position_with_scaling(tube_t)
-            return tube_t
-
-        elif self.current_axes == 'Pressure':
-            pressure = DataActuator(data=self.controller.Get_Pressure())
-            pressure = self.get_position_with_scaling(pressure)
-            return pressure
-
-        else:
-            self.emit_status(ThreadCommand('Update_Status',
+        match self.current_axes:
+            case 'Flow':
+                flow = DataActuator(data=self.controller.Get_Flow())
+                flow = self.get_position_with_scaling(flow)
+                return flow
+            case 'Steam_Temperature':
+                steam_t = DataActuator(data=self.controller.Get_Steam_T())
+                steam_t = self.get_position_with_scaling(steam_t)
+                return steam_t
+            case 'Tube_Temperature':
+                tube_t = DataActuator(data=self.controller.Get_Tube_T())
+                tube_t = self.get_position_with_scaling(tube_t)
+                return tube_t
+            case 'RH':
+                air_h = DataActuator(data=self.controller.Get_Air_H())
+                air_h = self.get_position_with_scaling(air_h)
+                return air_h
+            case 'Pressure':
+                pressure = DataActuator(data=self.controller.Get_Pressure())
+                pressure = self.get_position_with_scaling(pressure)
+                return pressure
+            case _:
+                self.emit_status(ThreadCommand('Update_Status',
                                            ['WARNING - No Axis Selected, self.current_axes can be None']))
 
     def user_condition_to_reach_target(self) -> bool:
@@ -172,30 +165,27 @@ class DAQ_Move_CellkraftE1500(DAQ_Move_base):
             A given parameter (within detector_settings) whose value has been changed by the user
         """
         if param.name() == 'axis':
-            if param.value() == 'Flow':
-                self.axis_unit = self._controller_units[0]
-                self.settings.child('units').value = self._controller_units[0]
-                self.current_axes = 'Flow'
-
-            elif param.value() == 'Steam_Temperature':
-                self.axis_unit = self._controller_units[1]
-                self.settings.child('units').value = self._controller_units[1]
-                self.current_axes = 'Steam_Temperature'
-
-            elif param.value() == 'Tube_Temperature':
-                self.axis_unit = self._controller_units[2]
-                self.settings.child('units').value = self._controller_units[2]
-                self.current_axes = 'Tube_Temperature'
-
-            elif param.value() == 'RH':
-                self.axis_unit = self._controller_units[3]
-                self.settings.child('units').value = self._controller_units[3]
-                self.current_axes = 'RH'
-
-            elif param.value() == 'Pressure':
-                self.axis_unit = self._controller_units[4]
-                self.settings.child('units').value = self._controller_units[4]
-                self.current_axes = 'Pressure'
+            match param.value():
+                case 'Flow':
+                    self.axis_unit = self._controller_units[0]
+                    self.settings.child('units').value = self._controller_units[0]
+                    self.current_axes = 'Flow'
+                case 'Steam_Temperature':
+                    self.axis_unit = self._controller_units[1]
+                    self.settings.child('units').value = self._controller_units[1]
+                    self.current_axes = 'Steam_Temperature'
+                case 'Tube_Temperature':
+                    self.axis_unit = self._controller_units[2]
+                    self.settings.child('units').value = self._controller_units[2]
+                    self.current_axes = 'Tube_Temperature'
+                case 'RH':
+                    self.axis_unit = self._controller_units[3]
+                    self.settings.child('units').value = self._controller_units[3]
+                    self.current_axes = 'RH'
+                case 'Pressure':
+                    self.axis_unit = self._controller_units[4]
+                    self.settings.child('units').value = self._controller_units[4]
+                    self.current_axes = 'Pressure'
         pass
 
     def ini_stage(self, controller=None):
@@ -266,39 +256,36 @@ class DAQ_Move_CellkraftE1500(DAQ_Move_base):
         value: (float) value of the target positioning
         """
         limit = self.settings.child('limit').opts['value']
-        if self.current_axes == 'Flow':
-            if not value.value() < float(limit):
-                self.emit_status(ThreadCommand('Update_Status', [f'WARNING - Flow have to be < {limit}']))
-            else:
-                val = self.controller.SP_Flow(value.value())*0.1
-                self.emit_status(ThreadCommand('Update_Status', [f'Flow set to {val}']))
 
-        elif self.current_axes == 'RH':
-            if not value.value() < float(limit):
-                self.emit_status(ThreadCommand('Update_Status', [f'WARNING - RH have to be < {limit}']))
-            else:
-                val = self.controller.RH(value.value())*0.1
-                self.emit_status(ThreadCommand('Update_Status', [f'RH set to {val}']))
-
-        elif self.current_axes == 'Steam_Temperature':
-            if not value.value() < float(limit):
-                self.emit_status(ThreadCommand('Update_Status', [f'WARNING - Steam_Temp have to be < {limit}']))
-            else:
-                val = self.controller.SP_SteamT(int(value.value()))
-                self.emit_status(ThreadCommand('Update_Status', [f'Steam_Temp set to {val}']))
-
-        elif self.current_axes == 'Tube_Temperature':
-            if not value.value() < float(limit):
-                self.emit_status(ThreadCommand('Update_Status', [f'WARNING - Tube_Temp have to be < {limit}']))
-            else:
-                val = self.controller.SP_Tube_Temp(int(value.value()))*0.1
-                self.emit_status(ThreadCommand('Update_Status', [f'Tube_Temp set to {val}']))
-
-        elif self.current_axes == 'Pressure':
-            self.emit_status(ThreadCommand('Update_Status', ["WARNING - Can't modify the pressure"]))
-
-        else:
-            self.emit_status(ThreadCommand('Update_Status',
+        match self.current_axes:
+            case 'Flow':
+                if not value.value() < float(limit):
+                    self.emit_status(ThreadCommand('Update_Status', [f'WARNING - Flow have to be < {limit}']))
+                else:
+                    val = self.controller.SP_Flow(value.value()) * 0.1
+                    self.emit_status(ThreadCommand('Update_Status', [f'Flow set to {val}']))
+            case 'Steam_Temperature':
+                if not value.value() < float(limit):
+                    self.emit_status(ThreadCommand('Update_Status', [f'WARNING - Steam_Temp have to be < {limit}']))
+                else:
+                    val = self.controller.SP_SteamT(int(value.value()))
+                    self.emit_status(ThreadCommand('Update_Status', [f'Steam_Temp set to {val}']))
+            case 'Tube_Temperature':
+                if not value.value() < float(limit):
+                    self.emit_status(ThreadCommand('Update_Status', [f'WARNING - Tube_Temp have to be < {limit}']))
+                else:
+                    val = self.controller.SP_Tube_Temp(int(value.value())) * 0.1
+                    self.emit_status(ThreadCommand('Update_Status', [f'Tube_Temp set to {val}']))
+            case 'RH':
+                if not value.value() < float(limit):
+                    self.emit_status(ThreadCommand('Update_Status', [f'WARNING - RH have to be < {limit}']))
+                else:
+                    val = self.controller.RH(value.value()) * 0.1
+                    self.emit_status(ThreadCommand('Update_Status', [f'RH set to {val}']))
+            case 'Pressure':
+                self.emit_status(ThreadCommand('Update_Status', ["WARNING - Can't modify the pressure"]))
+            case _:
+                self.emit_status(ThreadCommand('Update_Status',
                                            ['WARNING - Nothing moved - Problem with current_axes variable in'
                                             'daq_move_CELLkraftE1500.py - WARNING']))
 
