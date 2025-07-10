@@ -138,20 +138,6 @@ class DAQ_Move_CellkraftE1500(DAQ_Move_base):
                 self.emit_status(ThreadCommand('Update_Status',
                                            ['WARNING - No Axis Selected, self.current_axes can be None']))
 
-    def user_condition_to_reach_target(self) -> bool:
-        """ Implement a condition for exiting the polling mechanism and specifying that the
-        target value has been reached
-
-       Returns
-        -------
-        bool: if True, PyMoDAQ considers the target value has been reached
-        """
-        #  either delete this method if the usual polling is fine with you, but if need you can
-        #  add here some other condition to be fullfilled either a completely new one or
-        #  using or/and operations between the epsilon_bool and some other custom booleans
-        #  for a usage example see DAQ_Move_brushlessMotor from the Thorlabs plugin
-        return True
-
     def close(self):
         """Terminate the communication protocol"""
         self.controller.close()
