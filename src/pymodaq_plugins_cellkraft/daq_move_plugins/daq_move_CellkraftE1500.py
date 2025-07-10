@@ -89,22 +89,8 @@ class DAQ_Move_CellkraftE1500(DAQ_Move_base):
         self.controller: CellKraftE1500Drivers
         self.current_axes = self.settings.child('multiaxes', 'axis').value()
 
-        match self.current_axes:
-            case 'Flow':
-                self.settings.child('info').setValue(self.desc['Flow'])
-                self.settings.child('limit').setValue(self.lim['Flow'])
-            case 'Steam_Temperature':
-                self.settings.child('info').setValue(self.desc['Steam_Temperature'])
-                self.settings.child('limit').setValue(self.lim['Steam_Temperature'])
-            case 'Tube_Temperature':
-                self.settings.child('info').setValue(self.desc['Tube_Temperature'])
-                self.settings.child('limit').setValue(self.lim['Tube_Temperature'])
-            case 'RH':
-                self.settings.child('info').setValue(self.desc['RH'])
-                self.settings.child('limit').setValue(self.lim['RH'])
-            case 'Pressure':
-                self.settings.child('info').setValue(self.desc['Pressure'])
-                self.settings.child('limit').setValue(self.lim['Pressure'])
+        self.settings.child('info').setValue(self.desc[self.current_axes])
+        self.settings.child('limit').setValue(self.lim[self.current_axes])
 
     def get_actuator_value(self):
         """Get the current value from the hardware with scaling conversion.
