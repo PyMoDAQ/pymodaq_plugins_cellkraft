@@ -131,27 +131,12 @@ class DAQ_Move_CellkraftE1500(DAQ_Move_base):
             A given parameter (within detector_settings) whose value has been changed by the user
         """
         if param.name() == 'axis':
-            match param.value():
-                case 'Flow':
-                    self.axis_unit = self._controller_units[0]
-                    self.settings.child('units').value = self._controller_units[0]
-                    self.current_axes = 'Flow'
-                case 'Steam_Temperature':
-                    self.axis_unit = self._controller_units[1]
-                    self.settings.child('units').value = self._controller_units[1]
-                    self.current_axes = 'Steam_Temperature'
-                case 'Tube_Temperature':
-                    self.axis_unit = self._controller_units[2]
-                    self.settings.child('units').value = self._controller_units[2]
-                    self.current_axes = 'Tube_Temperature'
-                case 'RH':
-                    self.axis_unit = self._controller_units[3]
-                    self.settings.child('units').value = self._controller_units[3]
-                    self.current_axes = 'RH'
-                case 'Pressure':
-                    self.axis_unit = self._controller_units[4]
-                    self.settings.child('units').value = self._controller_units[4]
-                    self.current_axes = 'Pressure'
+
+            ind = self._axis_names.index(param.value())
+            self.axis_unit = self._controller_units[ind]
+            self.settings.child('units').value = self._controller_units[ind]
+            self.current_axes = param.value()
+
         pass
 
     def ini_stage(self, controller=None):
