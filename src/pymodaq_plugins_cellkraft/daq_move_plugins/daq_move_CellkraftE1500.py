@@ -101,28 +101,22 @@ class DAQ_Move_CellkraftE1500(DAQ_Move_base):
         """
         match self.current_axes:
             case 'Flow':
-                flow = DataActuator(data=self.controller.Get_Flow())
-                flow = self.get_position_with_scaling(flow)
-                return flow
+                value = DataActuator(data=self.controller.Get_Flow())
             case 'Steam_Temperature':
-                steam_t = DataActuator(data=self.controller.Get_Steam_T())
-                steam_t = self.get_position_with_scaling(steam_t)
-                return steam_t
+                value = DataActuator(data=self.controller.Get_Steam_T())
             case 'Tube_Temperature':
-                tube_t = DataActuator(data=self.controller.Get_Tube_T())
-                tube_t = self.get_position_with_scaling(tube_t)
-                return tube_t
+                value = DataActuator(data=self.controller.Get_Tube_T())
             case 'RH':
-                air_h = DataActuator(data=self.controller.Get_Air_H())
-                air_h = self.get_position_with_scaling(air_h)
-                return air_h
+                value = DataActuator(data=self.controller.Get_Air_H())
             case 'Pressure':
-                pressure = DataActuator(data=self.controller.Get_Pressure())
-                pressure = self.get_position_with_scaling(pressure)
-                return pressure
+                value = DataActuator(data=self.controller.Get_Pressure())
             case _:
                 self.emit_status(ThreadCommand('Update_Status',
                                            ['WARNING - No Axis Selected, self.current_axes can be None']))
+                value = DataActuator(data=0.)
+
+        value = self.get_position_with_scaling(flow)
+        return value
 
     def close(self):
         """Terminate the communication protocol"""
