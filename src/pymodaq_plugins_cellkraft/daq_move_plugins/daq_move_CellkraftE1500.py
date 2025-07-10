@@ -88,10 +88,6 @@ class DAQ_Move_CellkraftE1500(DAQ_Move_base):
     def ini_attributes(self):
         self.controller: CellKraftE1500Drivers
         self.current_axes = self.settings.child('multiaxes', 'axis').value()
-        self.change_param()
-        pass
-
-    def change_param(self):
 
         if self.current_axes == 'Flow':
             self.settings.child('info').setValue(self.desc['Flow'])
