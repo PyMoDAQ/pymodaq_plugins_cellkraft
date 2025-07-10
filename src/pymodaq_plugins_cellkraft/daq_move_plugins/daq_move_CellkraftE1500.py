@@ -245,25 +245,25 @@ class DAQ_Move_CellkraftE1500(DAQ_Move_base):
 
         match self.current_axes:
             case 'Flow':
-                if not value.value() < float(limit):
+                if value().value < 0 | value.value() > float(limit):
                     self.emit_status(ThreadCommand('Update_Status', [f'WARNING - Flow have to be < {limit}']))
                 else:
                     val = self.controller.SP_Flow(value.value()) * 0.1
                     self.emit_status(ThreadCommand('Update_Status', [f'Flow set to {val}']))
             case 'Steam_Temperature':
-                if not value.value() < float(limit):
+                if value().value < 0 | value.value() > float(limit):
                     self.emit_status(ThreadCommand('Update_Status', [f'WARNING - Steam_Temp have to be < {limit}']))
                 else:
                     val = self.controller.SP_SteamT(int(value.value()))
                     self.emit_status(ThreadCommand('Update_Status', [f'Steam_Temp set to {val}']))
             case 'Tube_Temperature':
-                if not value.value() < float(limit):
+                if value().value < 0 | value.value() > float(limit):
                     self.emit_status(ThreadCommand('Update_Status', [f'WARNING - Tube_Temp have to be < {limit}']))
                 else:
                     val = self.controller.SP_Tube_Temp(int(value.value())) * 0.1
                     self.emit_status(ThreadCommand('Update_Status', [f'Tube_Temp set to {val}']))
             case 'RH':
-                if not value.value() < float(limit):
+                if value().value < 0 | value.value() > float(limit):
                     self.emit_status(ThreadCommand('Update_Status', [f'WARNING - RH have to be < {limit}']))
                 else:
                     val = self.controller.RH(value.value()) * 0.1
