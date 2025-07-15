@@ -115,7 +115,7 @@ class DAQ_Move_CellkraftE1500(DAQ_Move_base):
                                            ['WARNING - No Axis Selected, self.current_axes can be None']))
                 value = DataActuator(data=0.)
 
-        value = self.get_position_with_scaling(flow)
+        value = self.get_position_with_scaling(value)
         return value
 
     def close(self):
